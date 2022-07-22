@@ -1,10 +1,20 @@
 import {Button, Checkbox, Form, Input} from "antd";
 import {ContentWrapper, LayoutWrappper, Title} from "./style";
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "../../store/configureStore";
+import {fetchLoginRequest} from "../../features/user/userSlice";
+import {LoginRequestParams} from "../../params/loginRequestParams";
 
 const Login = () => {
 
-    const onFinish = () => {
+    const user = useSelector((state: RootState) => state.user);
+    const dispatch = useDispatch();
 
+    const onFinish = (data: any) => {
+        const loginRequestParams = new LoginRequestParams(data.email, data.password);
+
+        // @ts-ignore
+        dispatch(fetchLoginRequest(loginRequestParams));
     }
 
     const onFinishFailed = () => {
@@ -17,6 +27,7 @@ const Login = () => {
                 <Title>
                     TeddyLog
                 </Title>
+                <div>{user.loading}</div>
                 <Form
                     name="basic"
                     labelCol={{span: 8}}
@@ -27,9 +38,9 @@ const Login = () => {
                     autoComplete="off"
                 >
                     <Form.Item
-                        label="Username"
-                        name="username"
-                        rules={[{required: true, message: 'Please input your username!'}]}
+                        label="Email"
+                        name="email"
+                        rules={[{required: true, type: 'email', message: '이메일을 입력해주세요.'}]}
                     >
                         <Input/>
                     </Form.Item>
@@ -47,7 +58,7 @@ const Login = () => {
                     </Form.Item>
 
                     <Form.Item wrapperCol={{offset: 8, span: 16}}>
-                        <Button type="primary" htmlType="submit">
+                        <Button type="primary" htmlType="submit" loading={user.loading === 'pending'}>
                             Submit
                         </Button>
                     </Form.Item>

@@ -5,13 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="982e9be7-83d1-4296-bad3-c424274ddbc6" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/features/user/userSlice.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/params/loginRequestParams.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/store/configureStore.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/_app.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/_app.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/login.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/Home.module.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/globals.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/login/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/login/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -57,6 +57,11 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/pages/login" />
+    </key>
+  </component>
   <component name="RunManager" selected="npm.npm lint">
     <configuration name="npm build" type="js.build_tools.npm">
       <package-json value="$PROJECT_DIR$/package.json" />
@@ -107,7 +112,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1658507078491</updated>
-      <workItem from="1658507079599" duration="2713000" />
+      <workItem from="1658507079599" duration="6466000" />
     </task>
     <servers />
   </component>
