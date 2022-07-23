@@ -13,6 +13,7 @@
     "@reduxjs/toolkit": "^1.8.3",
     "@types/antd": "^1.0.0",
     "antd": "^4.21.7",
+    "firebase": "^9.9.1",
     "next": "12.2.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",

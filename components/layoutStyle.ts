@@ -1,11 +1,12 @@
-import styled from "styled-components";
-import {Layout} from "antd";
-import {Content} from "antd/lib/layout/layout";
+import styled from 'styled-components';
+import { Layout } from 'antd';
+import { Content } from 'antd/lib/layout/layout';
 
 export const LayoutWrappper = styled(Layout)`
   width: 100%;
   display: flex;
-  height: 100vh;`;
+  height: 100vh;
+`;
 
 export const ContentWrapper = styled(Content)`
   margin: auto;
@@ -14,7 +15,7 @@ export const ContentWrapper = styled(Content)`
   justify-content: center;
   //align-items: center;
   max-width: 800px;
-`
+`;
 
 export const Title = styled.span`
   font-size: 24px;
@@ -23,4 +24,4 @@ export const Title = styled.span`
   display: flex;
   margin: 0;
   padding-bottom: 20px;
-`
+`;
