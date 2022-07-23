@@ -13,7 +13,7 @@ export const ContentWrapper = styled(Content)`
   flex-direction: column;
   justify-content: center;
   //align-items: center;
-  max-width: 1100px;
+  max-width: 800px;
 `
 
 export const Title = styled.span`

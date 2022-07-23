@@ -5,14 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="982e9be7-83d1-4296-bad3-c424274ddbc6" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/features/user/userSlice.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/params/loginRequestParams.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/store/configureStore.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/_app.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/_app.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/login/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/login/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/login/style.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pages/login/style.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,8 +47,9 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_interpreter_path": "node",
     "nodejs_package_manager_path": "yarn",
+    "prettierjs.PrettierConfiguration.Package": "/usr/local/lib/node_modules/prettier",
     "rearrange.code.on.save": "true",
-    "settings.editor.selected.configurable": "actions.on.save",
+    "settings.editor.selected.configurable": "settings.javascript.prettier",
     "ts.external.directory.path": "/Users/teddy/WebstormProjects/teddy_log/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   }
@@ -112,7 +109,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1658507078491</updated>
-      <workItem from="1658507079599" duration="6466000" />
+      <workItem from="1658507079599" duration="7961000" />
+      <workItem from="1658573492250" duration="343000" />
     </task>
     <servers />
   </component>
