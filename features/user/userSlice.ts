@@ -1,46 +1,45 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { LoginRequestParams } from '../../params/loginRequestParams';
-import { getAuth, signInWithEmailAndPassword } from '@firebase/auth';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { IAsync } from '../../common/asyncType';
+import { IUserRequest } from './userType';
+import { doc, getDoc } from '@firebase/firestore';
+import { db } from '../../service/firebase/.firebase';
 
-const wait = (timeToDelay: number) =>
-  new Promise((resolve) => setTimeout(resolve, timeToDelay)); //이와 같이 선언 후
-
-export const fetchLoginRequest = createAsyncThunk(
-  'user/fetchLoginRequest',
-  async (loginRequestParams: LoginRequestParams, { rejectWithValue }) => {
+export const fetchUserInfoRequest = createAsyncThunk(
+  'user/fetchUserInfoRequest',
+  async (userRequest: IUserRequest, { rejectWithValue }) => {
     try {
-      const auth = getAuth();
-      //
-      const credential = await signInWithEmailAndPassword(
-        auth,
-        loginRequestParams.email,
-        loginRequestParams.password
-      );
-      return {
-        email: credential.user?.email ?? '',
-        nickname: credential.user?.displayName ?? '',
-      };
+      const userCollection = doc(db, 'Users', userRequest.uid);
+      const userSnap = await getDoc(userCollection);
+      if (userSnap.exists()) {
+        const data = userSnap.data();
+        return {
+          email: userRequest.email,
+          nickname: data.nickname,
+          introduce: data.introduce,
+        };
+      } else {
+        return {
+          email: userRequest.email,
+          nickname: null,
+          introduce: null,
+        };
+      }
     } catch (err) {
-      throw rejectWithValue('로그인 실패');
+      throw rejectWithValue('유저 정보 요청 실패');
     }
   }
 );
 
-export interface UserState {
-  email: string;
-  nickname: string;
-  loading: 'idle' | 'pending' | 'succeeded' | 'failed';
-  error: string | null;
-}
-
-export interface LoginDataForm {
-  email: string;
-  password: string;
+export interface UserState extends IAsync {
+  email: string | null;
+  nickname: string | null;
+  introduce: string | null;
 }
 
 const initialState: UserState = {
-  email: '',
-  nickname: '',
+  email: null,
+  nickname: null,
+  introduce: null,
   loading: 'idle',
   error: null,
 };
@@ -48,32 +47,25 @@ const initialState: UserState = {
 export const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {
-    loginRequest: (state, action: PayloadAction<LoginRequestParams>) => {
-      state.email = action.payload.email;
-      state.nickname = 'Teddy';
-      state.error = null;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchLoginRequest.fulfilled, (state, action) => {
+      .addCase(fetchUserInfoRequest.fulfilled, (state, action) => {
         state.error = null;
+        state.loading = 'succeeded';
         state.email = action.payload.email;
         state.nickname = action.payload.nickname;
-        state.loading = 'succeeded';
+        state.introduce = action.payload.introduce;
       })
-      .addCase(fetchLoginRequest.rejected, (state, action) => {
+      .addCase(fetchUserInfoRequest.rejected, (state, action) => {
         state.error = action.payload as string;
         state.loading = 'failed';
       })
-      .addCase(fetchLoginRequest.pending, (state, action) => {
+      .addCase(fetchUserInfoRequest.pending, (state, action) => {
         state.loading = 'pending';
         state.error = null;
       });
   },
 });
-
-export const { loginRequest } = userSlice.actions;
 
 export default userSlice.reducer;

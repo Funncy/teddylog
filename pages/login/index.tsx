@@ -6,37 +6,56 @@ import {
 } from '../../components/layoutStyle';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/configureStore';
-import { fetchLoginRequest } from '../../features/user/userSlice';
-import { LoginRequestParams } from '../../params/loginRequestParams';
+import { fetchLoginRequest } from '../../features/auth/authSlice';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import Link from 'next/link';
+import { fetchUserInfoRequest } from '../../features/user/userSlice';
 
 const Login = () => {
-  const user = useSelector((state: RootState) => state.user);
+  const { error, loading, token } = useSelector(
+    (state: RootState) => state.auth
+  );
   const dispatch = useDispatch();
   const router = useRouter();
   const [form] = Form.useForm();
 
   useEffect(() => {
-    console.log(user);
-    console.log(user.error);
-    if (user.error !== null) {
-      showErrorMessage(user.error);
+    if (error !== null) {
+      showErrorMessage(error);
     }
-  }, [user]);
+  }, [error]);
 
-  const onFinish = (data: any) => {
+  useEffect(() => {
+    // if (token !== null) {
+    //   router.push('/');
+    // }
+  }, [token]);
+
+  const onFinish = async (data: any) => {
     form.resetFields(['password']);
+    try {
+      const user = await dispatch(
+        // @ts-ignore
+        fetchLoginRequest({ email: data.email, password: data.password })
+      ).unwrap();
 
-    const loginRequestParams = new LoginRequestParams(
-      data.email,
-      data.password
-    );
+      const userInfo = await dispatch(
+        // @ts-ignore
+        fetchUserInfoRequest({ uid: user.uid, email: user.email })
+      ).unwrap();
+      router.push('/');
 
-    // @ts-ignore
-    dispatch(fetchLoginRequest(loginRequestParams));
+      //유저 정보 입력 화면 이동
+      if (userInfo.nickname === null) {
+        // router.push('/signUp/info');
+      } else {
+        //홈 화면 이동
+      }
+    } catch (err) {
+      showErrorMessage('로그인 요청에 실패하였습니다.');
+    }
   };
 
   const showErrorMessage = (err: string) => {
@@ -93,7 +112,7 @@ const Login = () => {
               style={{ width: '100%', marginBottom: '8px' }}
               type="primary"
               htmlType="submit"
-              loading={user.loading === 'pending'}
+              loading={loading === 'pending'}
               className="login-form-button"
             >
               로그인

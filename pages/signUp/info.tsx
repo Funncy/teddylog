@@ -6,7 +6,7 @@ import {
 } from '../../components/layoutStyle';
 import { Button, Checkbox, Form, Input } from 'antd';
 
-function SignUp() {
+function UserInfo() {
   const [form] = Form.useForm();
 
   const onFinish = (data: any) => {};
@@ -14,7 +14,7 @@ function SignUp() {
   return (
     <LayoutWrappper>
       <ContentWrapper>
-        <Title>TeddyLog - 회원가입</Title>
+        <Title>TeddyLog - 유저 정보 입력</Title>
         <Form
           form={form}
           name="basic"
@@ -25,8 +25,8 @@ function SignUp() {
           autoComplete="off"
         >
           <Form.Item
-            label="Email"
-            name="email"
+            label="Nickname"
+            name="nickname"
             rules={[
               {
                 required: true,
@@ -80,4 +80,4 @@ function SignUp() {
   );
 }
 
-export default SignUp;
+export default UserInfo;

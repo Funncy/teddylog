@@ -1,10 +1,9 @@
-import type { AppProps } from 'next/app';
+import type {AppProps} from 'next/app';
 import 'antd/dist/antd.css';
-import { store } from '../store/configureStore';
-import { Provider } from 'react-redux';
-import { init } from '../firebase/.firebase';
+import {store} from '../store/configureStore';
+import {Provider} from 'react-redux';
 
-init();
+// export const db = init();
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
