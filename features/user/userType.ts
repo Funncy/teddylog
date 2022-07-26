@@ -5,6 +5,7 @@ export interface IUserRequest {
 
 export interface IUpdateUserRequest {
   uid: string | null;
+  email: string | null;
   nickname: string;
   introduce: string;
 }

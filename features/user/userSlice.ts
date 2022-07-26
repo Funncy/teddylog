@@ -8,18 +8,19 @@ export const fetchUserInfoRequest = createAsyncThunk(
   'user/fetchUserInfoRequest',
   async (userRequest: IUserRequest, { rejectWithValue }) => {
     try {
-      const userCollection = doc(db, 'Users', userRequest.uid);
+      const { uid, email } = userRequest;
+      const userCollection = doc(db, 'Users', uid);
       const userSnap = await getDoc(userCollection);
       if (userSnap.exists()) {
         const data = userSnap.data();
         return {
-          email: userRequest.email,
+          email,
           nickname: data.nickname,
           introduce: data.introduce,
         };
       } else {
         return {
-          email: userRequest.email,
+          email,
           nickname: null,
           introduce: null,
         };
@@ -34,26 +35,31 @@ export const updateUserInfo = createAsyncThunk(
   'user/updateUserInfo',
   async (updateUserRequest: IUpdateUserRequest, { rejectWithValue }) => {
     try {
-      if (updateUserRequest.uid === null)
+      const { uid, email, nickname, introduce } = updateUserRequest;
+      if (uid === null || email == null)
         throw rejectWithValue('유저 정보 오류');
 
-      const userCollection = doc(db, 'Users', updateUserRequest.uid);
+      const userCollection = doc(db, 'Users', uid);
       const userSnap = await getDoc(userCollection);
       if (userSnap.exists()) {
         await updateDoc(userSnap.ref, {
-          nickname: updateUserRequest.nickname,
-          introduce: updateUserRequest.introduce,
+          email,
+          nickname,
+          introduce,
         });
       } else {
         await setDoc(userCollection, {
-          nickname: updateUserRequest.nickname,
-          introduce: updateUserRequest.introduce,
+          email,
+          nickname,
+          introduce,
         });
       }
 
       return {
-        nickname: updateUserRequest.nickname,
-        introduce: updateUserRequest.introduce,
+        email,
+        uid,
+        nickname,
+        introduce,
       };
     } catch (err) {
       throw rejectWithValue('유저 정보 요청 실패');

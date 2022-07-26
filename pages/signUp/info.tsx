@@ -14,7 +14,7 @@ function UserInfo() {
   const { updateError, updateLoading } = useSelector(
     (state: RootState) => state.user
   );
-  const { uid } = useSelector((state: RootState) => state.auth);
+  const { uid, email } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
   const router = useRouter();
   const [form] = Form.useForm();
@@ -31,6 +31,7 @@ function UserInfo() {
       updateUserInfo({
         nickname: data.nickname,
         introduce: data.introduce,
+        email,
         uid: uid,
       })
     ).unwrap();
@@ -46,7 +47,7 @@ function UserInfo() {
           form={form}
           name="basic"
           labelCol={{ span: 8 }}
-          wrapperCol={{ span: 16 }}
+          wrapperCol={{ span: 32 }}
           initialValues={{ remember: true }}
           onFinish={onFinish}
           autoComplete="off"
