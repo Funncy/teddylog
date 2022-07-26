@@ -1,6 +1,6 @@
 export interface IUserRequest {
   uid: string;
-  email: string;
+  email: string | null;
 }
 
 export interface IUpdateUserRequest {

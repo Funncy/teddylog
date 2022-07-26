@@ -11,45 +11,59 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import Link from 'next/link';
-import { fetchUserInfoRequest } from '../../features/user/userSlice';
 
 const Login = () => {
-  const { error, loading, token } = useSelector(
+  const { loginError, loginLoading, token } = useSelector(
     (state: RootState) => state.auth
+  );
+  const { nickname, fetchLoading } = useSelector(
+    (state: RootState) => state.user
   );
   const dispatch = useDispatch();
   const router = useRouter();
   const [form] = Form.useForm();
 
   useEffect(() => {
-    if (error !== null) {
-      showErrorMessage(error);
+    if (loginError !== null) {
+      showErrorMessage(loginError);
     }
-  }, [error]);
+  }, [loginError]);
+
+  useEffect(() => {
+    if (nickname === null && fetchLoading === 'succeeded') {
+      router.push('/signUp/info');
+    } else if (fetchLoading === 'succeeded') {
+      router.push('/');
+    }
+  }, [nickname, fetchLoading]);
 
   const onFinish = async (data: any) => {
     form.resetFields(['password']);
-    try {
-      const user = await dispatch(
-        // @ts-ignore
-        fetchLoginRequest({ email: data.email, password: data.password })
-      ).unwrap();
-
-      const userInfo = await dispatch(
-        // @ts-ignore
-        fetchUserInfoRequest({ uid: user.uid, email: user.email })
-      ).unwrap();
-
-      //유저 정보 입력 화면 이동
-      if (userInfo.nickname === null) {
-        router.push('/signUp/info');
-      } else {
-        //홈 화면 이동
-        router.push('/');
-      }
-    } catch (err) {
-      showErrorMessage('로그인 요청에 실패하였습니다.');
-    }
+    dispatch(
+      // @ts-ignore
+      fetchLoginRequest({ email: data.email, password: data.password })
+    );
+    // try {
+    //   const user = await dispatch(
+    //     // @ts-ignore
+    //     fetchLoginRequest({ email: data.email, password: data.password })
+    //   ).unwrap();
+    //
+    //   const userInfo = await dispatch(
+    //     // @ts-ignore
+    //     fetchUserInfoRequest({ uid: user.uid, email: user.email })
+    //   ).unwrap();
+    //
+    //   //유저 정보 입력 화면 이동
+    //   if (userInfo.nickname === null) {
+    //     router.push('/signUp/info');
+    //   } else {
+    //     //홈 화면 이동
+    //     router.push('/');
+    //   }
+    // } catch (err) {
+    //   showErrorMessage('로그인 요청에 실패하였습니다.');
+    // }
   };
 
   const showErrorMessage = (err: string) => {
@@ -106,7 +120,7 @@ const Login = () => {
               style={{ width: '100%', marginBottom: '8px' }}
               type="primary"
               htmlType="submit"
-              loading={loading === 'pending'}
+              loading={loginLoading === 'pending'}
               className="login-form-button"
             >
               로그인
