@@ -43,27 +43,6 @@ const Login = () => {
       // @ts-ignore
       fetchLoginRequest({ email: data.email, password: data.password })
     );
-    // try {
-    //   const user = await dispatch(
-    //     // @ts-ignore
-    //     fetchLoginRequest({ email: data.email, password: data.password })
-    //   ).unwrap();
-    //
-    //   const userInfo = await dispatch(
-    //     // @ts-ignore
-    //     fetchUserInfoRequest({ uid: user.uid, email: user.email })
-    //   ).unwrap();
-    //
-    //   //유저 정보 입력 화면 이동
-    //   if (userInfo.nickname === null) {
-    //     router.push('/signUp/info');
-    //   } else {
-    //     //홈 화면 이동
-    //     router.push('/');
-    //   }
-    // } catch (err) {
-    //   showErrorMessage('로그인 요청에 실패하였습니다.');
-    // }
   };
 
   const showErrorMessage = (err: string) => {
