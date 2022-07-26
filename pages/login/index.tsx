@@ -27,12 +27,6 @@ const Login = () => {
     }
   }, [error]);
 
-  useEffect(() => {
-    // if (token !== null) {
-    //   router.push('/');
-    // }
-  }, [token]);
-
   const onFinish = async (data: any) => {
     form.resetFields(['password']);
     try {
@@ -45,13 +39,13 @@ const Login = () => {
         // @ts-ignore
         fetchUserInfoRequest({ uid: user.uid, email: user.email })
       ).unwrap();
-      router.push('/');
 
       //유저 정보 입력 화면 이동
       if (userInfo.nickname === null) {
-        // router.push('/signUp/info');
+        router.push('/signUp/info');
       } else {
         //홈 화면 이동
+        router.push('/');
       }
     } catch (err) {
       showErrorMessage('로그인 요청에 실패하였습니다.');

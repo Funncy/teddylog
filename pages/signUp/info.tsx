@@ -1,15 +1,43 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   ContentWrapper,
   LayoutWrappper,
   Title,
 } from '../../components/layoutStyle';
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Form, Input, message } from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store/configureStore';
+import { useRouter } from 'next/router';
+import { updateUserInfo } from '../../features/user/userSlice';
 
 function UserInfo() {
+  const { updateError, updateLoading } = useSelector(
+    (state: RootState) => state.user
+  );
+  const { uid } = useSelector((state: RootState) => state.auth);
+  const dispatch = useDispatch();
+  const router = useRouter();
   const [form] = Form.useForm();
 
-  const onFinish = (data: any) => {};
+  useEffect(() => {
+    if (updateError !== null) {
+      message.error(updateError);
+    }
+  }, [updateError]);
+
+  const onFinish = async (data: any) => {
+    console.log('start!');
+    const result = await dispatch(
+      // @ts-ignore
+      updateUserInfo({
+        nickname: data.nickname,
+        introduce: data.introduce,
+        uid: uid,
+      })
+    ).unwrap();
+
+    router.push('/');
+  };
 
   return (
     <LayoutWrappper>
@@ -25,13 +53,12 @@ function UserInfo() {
           autoComplete="off"
         >
           <Form.Item
-            label="Nickname"
+            label="닉네임"
             name="nickname"
             rules={[
               {
                 required: true,
-                type: 'email',
-                message: '이메일을 입력해주세요.',
+                message: '닉네임을 입력해주세요.',
               },
             ]}
           >
@@ -39,37 +66,24 @@ function UserInfo() {
           </Form.Item>
 
           <Form.Item
-            label="Password"
-            name="password"
-            rules={[{ required: true, message: '비밀번호를 입력해주세요' }]}
-          >
-            <Input.Password />
-          </Form.Item>
-
-          <Form.Item
-            label="Password"
-            name="password"
+            name={'introduce'}
+            label="한줄 각오"
             rules={[
-              { required: true, message: '비밀번호 확인을 입력해주세요' },
+              {
+                required: true,
+                message: '닉네임을 입력해주세요.',
+              },
             ]}
           >
-            <Input.Password />
+            <Input.TextArea />
           </Form.Item>
 
-          <Form.Item
-            name="remember"
-            valuePropName="checked"
-            wrapperCol={{ offset: 8, span: 20 }}
-          >
-            <Checkbox>Remember me</Checkbox>
-          </Form.Item>
-
-          <Form.Item wrapperCol={{ offset: 8, span: 40 }}>
+          <Form.Item>
             <Button
-              style={{ marginLeft: '20px' }}
+              style={{ width: '100%', marginBottom: '8px' }}
               type="primary"
-              // onClick={handleGoSignUp}
-              // loading={user.loading === 'pending'}
+              htmlType="submit"
+              loading={updateLoading === 'pending'}
             >
               회원가입
             </Button>

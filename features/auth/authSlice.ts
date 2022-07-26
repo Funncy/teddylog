@@ -7,20 +7,17 @@ export const fetchLoginRequest = createAsyncThunk(
   'auth/fetchLoginRequest',
   async (user: ILoginRequest, { rejectWithValue }) => {
     try {
-      console.log('로그인 시도!!');
       const credential = await signInWithEmailAndPassword(
         getAuth(),
         user.email,
         user.password
       );
-      console.log(`로그인 성공 `);
       return {
         token: await credential.user.getIdToken(),
         email: credential.user.email,
         uid: credential.user.uid,
       };
     } catch (err) {
-      console.log(err);
       throw rejectWithValue('로그인 실패');
     }
   }
