@@ -1,15 +1,45 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   ContentWrapper,
   LayoutWrappper,
   Title,
 } from '../../components/layoutStyle';
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Form, Input, message } from 'antd';
+import { LockOutlined, MailOutlined } from '@ant-design/icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store/configureStore';
+import { useRouter } from 'next/router';
+import { fetchSignUpRequest } from '../../features/auth/authSlice';
 
 function SignUp() {
+  const { uid, signUpLoading, signUpError } = useSelector(
+    (state: RootState) => state.auth
+  );
+  const dispatch = useDispatch();
+  const router = useRouter();
   const [form] = Form.useForm();
 
-  const onFinish = (data: any) => {};
+  const onFinish = (data: any) => {
+    dispatch(
+      // @ts-ignore
+      fetchSignUpRequest({
+        email: data.email,
+        password: data.password,
+      })
+    );
+  };
+
+  useEffect(() => {
+    if (uid !== null) {
+      router.push('/signUp/info');
+    }
+  }, [uid]);
+
+  useEffect(() => {
+    if (signUpError !== null) {
+      message.error(signUpError);
+    }
+  }, [signUpError]);
 
   return (
     <LayoutWrappper>
@@ -18,14 +48,12 @@ function SignUp() {
         <Form
           form={form}
           name="basic"
-          labelCol={{ span: 8 }}
-          wrapperCol={{ span: 16 }}
+          wrapperCol={{ span: 32 }}
           initialValues={{ remember: true }}
           onFinish={onFinish}
           autoComplete="off"
         >
           <Form.Item
-            label="Email"
             name="email"
             rules={[
               {
@@ -35,41 +63,42 @@ function SignUp() {
               },
             ]}
           >
-            <Input />
+            <Input
+              prefix={<MailOutlined className="site-form-item-icon" />}
+              placeholder="이메일"
+            />
           </Form.Item>
 
           <Form.Item
-            label="Password"
             name="password"
             rules={[{ required: true, message: '비밀번호를 입력해주세요' }]}
           >
-            <Input.Password />
+            <Input
+              prefix={<LockOutlined className="site-form-item-icon" />}
+              type="password"
+              placeholder="비밀번호"
+            />
           </Form.Item>
 
           <Form.Item
-            label="Password"
-            name="password"
+            name="re-password"
             rules={[
               { required: true, message: '비밀번호 확인을 입력해주세요' },
             ]}
           >
-            <Input.Password />
+            <Input
+              prefix={<LockOutlined className="site-form-item-icon" />}
+              type="password"
+              placeholder="비밀번호 확인"
+            />
           </Form.Item>
 
-          <Form.Item
-            name="remember"
-            valuePropName="checked"
-            wrapperCol={{ offset: 8, span: 20 }}
-          >
-            <Checkbox>Remember me</Checkbox>
-          </Form.Item>
-
-          <Form.Item wrapperCol={{ offset: 8, span: 40 }}>
+          <Form.Item>
             <Button
-              style={{ marginLeft: '20px' }}
+              style={{ width: '100%' }}
               type="primary"
-              // onClick={handleGoSignUp}
-              // loading={user.loading === 'pending'}
+              htmlType="submit"
+              loading={signUpLoading === 'pending'}
             >
               회원가입
             </Button>

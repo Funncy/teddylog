@@ -26,7 +26,6 @@ function UserInfo() {
   }, [updateError]);
 
   const onFinish = async (data: any) => {
-    console.log('start!');
     const result = await dispatch(
       // @ts-ignore
       updateUserInfo({

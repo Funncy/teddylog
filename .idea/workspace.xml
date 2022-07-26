@@ -7,9 +7,8 @@
     <list default="true" id="982e9be7-83d1-4296-bad3-c424274ddbc6" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/features/auth/authSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/features/auth/authSlice.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/user/userSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/features/user/userSlice.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/features/user/userType.ts" beforeDir="false" afterPath="$PROJECT_DIR$/features/user/userType.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/login/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/login/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/features/auth/authType.ts" beforeDir="false" afterPath="$PROJECT_DIR$/features/auth/authType.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/signUp/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/signUp/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/signUp/info.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/pages/signUp/info.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -114,7 +113,7 @@
       <option name="presentableId" value="Default" />
       <updated>1658507078491</updated>
       <workItem from="1658507079599" duration="7961000" />
-      <workItem from="1658573492250" duration="14590000" />
+      <workItem from="1658573492250" duration="16370000" />
     </task>
     <servers />
   </component>
