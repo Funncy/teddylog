@@ -1,40 +1,41 @@
 import type { NextPage } from 'next';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/configureStore';
 import styled from 'styled-components';
+import {
+  CalendarOutlined,
+  OrderedListOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
+import BottomNavItem from '../components/bottomNavItem';
 
 const Home: NextPage = () => {
+  const [selectedNav, setSelectedNav] = useState(1);
   const { uid, token } = useSelector((state: RootState) => state.auth);
   const router = useRouter();
 
   const BodyWrapper = styled.div`
     margin: auto;
-    max-width: 600px;
+    max-width: 400px;
     height: 100vh;
-    background-color: green;
+    //background-color: green;
   `;
 
   const BottomNav = styled.div`
-    background-color: red;
+    box-shadow: 0 0 5px #ebeff6;
+    //border-top: 1px solid black;
+    background-color: white;
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    height: 60px;
-    max-width: 600px;
+    height: 40px;
+    max-width: 400px;
     margin: auto;
     display: flex;
-  `;
-
-  const BottomNavItem = styled.div`
-    flex: 1;
-    padding-right: 20px;
-    padding-left: 20px;
-    margin-right: 20px;
-    margin-left: 20px;
-    background-color: aquamarine;
+    font-size: 10px;
   `;
 
   useEffect(() => {
@@ -49,9 +50,27 @@ const Home: NextPage = () => {
     <div>
       <BodyWrapper>
         <BottomNav>
-          <BottomNavItem></BottomNavItem>
-          <BottomNavItem></BottomNavItem>
-          <BottomNavItem></BottomNavItem>
+          <BottomNavItem
+            active={selectedNav === 1}
+            onClick={(e) => setSelectedNav(1)}
+          >
+            <OrderedListOutlined style={{ fontSize: '15px' }} />
+            <span style={{ fontSize: '4px', fontWeight: 'bold' }}>홈</span>
+          </BottomNavItem>
+          <BottomNavItem
+            active={selectedNav === 2}
+            onClick={(e) => setSelectedNav(2)}
+          >
+            <CalendarOutlined style={{ fontSize: '15px' }} />
+            <span>캘린더</span>
+          </BottomNavItem>
+          <BottomNavItem
+            active={selectedNav === 3}
+            onClick={(e) => setSelectedNav(3)}
+          >
+            <UserOutlined style={{ fontSize: '15px' }} />
+            <span>프로필</span>
+          </BottomNavItem>
         </BottomNav>
       </BodyWrapper>
     </div>
