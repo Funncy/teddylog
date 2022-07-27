@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { PlusOutlined } from '@ant-design/icons';
 import Habit from './habit';
+import { Form } from 'antd';
+import CreateHabitModal from './createHabitModal';
 
 const BackgroundDiv = styled.div`
   //background-color: red;
@@ -36,7 +38,14 @@ const Title = styled.div`
 `;
 
 function HomeBody() {
+  const [form] = Form.useForm();
   const [count, setCount] = useState(0);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const createHabit = () => {
+    setIsModalVisible(false);
+  };
+
   return (
     <BackgroundDiv>
       <Title>
@@ -55,11 +64,20 @@ function HomeBody() {
           }}
         ></Habit>
       </div>
-      <FabButton>
+      <FabButton
+        onClick={(e) => {
+          if (!isModalVisible) setIsModalVisible(true);
+        }}
+      >
         <PlusOutlined
           style={{ fontSize: '20px', fontWeight: 'bold', color: 'white' }}
         />
       </FabButton>
+      <CreateHabitModal
+        isModalVisible={isModalVisible}
+        onOk={createHabit}
+        onCancel={(e) => setIsModalVisible(false)}
+      />
     </BackgroundDiv>
   );
 }
