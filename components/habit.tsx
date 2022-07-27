@@ -48,13 +48,15 @@ function Habit({ title, total, current, decrease, increase }: IHbait) {
         <MinusOutlined />
       </IconWrapper>
       <div style={{ textAlign: 'center' }}>
-        <div style={{ fontSize: '15px', fontWeight: 'bold' }}>Title</div>
-        <div>1/3</div>
+        <div style={{ fontSize: '15px', fontWeight: 'bold' }}>{title}</div>
+        <div>
+          {current}/{total}
+        </div>
       </div>
       <IconWrapper onClick={increase}>
         <PlusOutlined />
       </IconWrapper>
-      <ProgressBackground progress={100} />
+      <ProgressBackground progress={(current / total) * 100} />
     </Habbit>
   );
 }

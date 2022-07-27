@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { PlusOutlined } from '@ant-design/icons';
 import Habit from './habit';
@@ -36,13 +36,24 @@ const Title = styled.div`
 `;
 
 function HomeBody() {
+  const [count, setCount] = useState(0);
   return (
     <BackgroundDiv>
       <Title>
         <span style={{ alignSelf: 'center' }}>TeddyLog</span>
       </Title>
       <div>
-        <Habit></Habit>
+        <Habit
+          title={'테스트'}
+          total={10}
+          current={count}
+          decrease={(e) => {
+            setCount(count - 1);
+          }}
+          increase={(e) => {
+            setCount(count + 1);
+          }}
+        ></Habit>
       </div>
       <FabButton>
         <PlusOutlined
