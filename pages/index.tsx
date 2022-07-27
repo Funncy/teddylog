@@ -10,6 +10,7 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import BottomNavItem from '../components/bottomNavItem';
+import HomeBody from '../components/HomeBody';
 
 const Home: NextPage = () => {
   const [selectedNav, setSelectedNav] = useState(1);
@@ -20,22 +21,24 @@ const Home: NextPage = () => {
     margin: auto;
     max-width: 400px;
     height: 100vh;
+    display: flex;
+    flex-direction: column;
     //background-color: green;
   `;
 
   const BottomNav = styled.div`
     box-shadow: 0 0 5px #ebeff6;
-    //border-top: 1px solid black;
     background-color: white;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
     height: 40px;
     max-width: 400px;
+    width: 100%;
     margin: auto;
     display: flex;
     font-size: 10px;
+  `;
+
+  const ContentWrapper = styled.div`
+    flex: 1;
   `;
 
   useEffect(() => {
@@ -49,6 +52,9 @@ const Home: NextPage = () => {
   return (
     <div>
       <BodyWrapper>
+        <ContentWrapper>
+          <HomeBody />
+        </ContentWrapper>
         <BottomNav>
           <BottomNavItem
             active={selectedNav === 1}
