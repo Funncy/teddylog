@@ -20,6 +20,8 @@ function CreateHabitModal({
             name: form.getFieldValue('name'),
             goalCount: parseInt(form.getFieldValue('goalCount')),
         });
+
+        form.resetFields(['name', 'goalCount']);
     }
 
 
