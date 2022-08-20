@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   createHabitRequest,
   fetchHabitsRequest,
+  updateHabitRequest,
 } from '../features/habit/habitSlice';
 import { RootState } from '../store/configureStore';
 import { IHabitModal } from '../features/habit/habitType';
@@ -65,6 +66,24 @@ function HomeBody() {
     dispatch(fetchHabitsRequest({ uid }));
   }, []);
 
+  const updateCount = (hid: string, count: number) => {
+    // @ts-ignore
+    dispatch(updateHabitRequest({ uid, hid, count }));
+  };
+
+  const increaseCount = (hid: string, currentCount: number) => {
+    const count = currentCount + 1;
+    // @ts-ignore
+    dispatch(updateHabitRequest({ uid, hid, count }));
+  };
+
+  const decreaseCount = (hid: string, currentCount: number) => {
+    if (currentCount === 0) return;
+    const count = currentCount === 0 ? 0 : currentCount - 1;
+    // @ts-ignore
+    dispatch(updateHabitRequest({ uid, hid, count }));
+  };
+
   return (
     <BackgroundDiv>
       <Title>
@@ -78,11 +97,11 @@ function HomeBody() {
               title={e.name}
               total={e.goalCount}
               current={e.currentCount ?? 0}
-              decrease={(e) => {
-                // setCount(count - 1);
+              decrease={(_) => {
+                decreaseCount(e.id, e.currentCount ?? 0);
               }}
-              increase={(e) => {
-                // setCount(count + 1);
+              increase={(_) => {
+                increaseCount(e.id, e.currentCount ?? 0);
               }}
             ></Habit>
           );

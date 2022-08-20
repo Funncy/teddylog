@@ -1,6 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { AsyncType } from '../../common/asyncType';
-import { ICreateHabitRequest, IFetchHabitsRequest } from './habitType';
+import {
+  ICreateHabitRequest,
+  IFetchHabitsRequest,
+  IUpdateHabitRequest,
+} from './habitType';
 import {
   addDoc,
   collection,
@@ -8,6 +12,7 @@ import {
   getDoc,
   getDocs,
   setDoc,
+  updateDoc,
 } from '@firebase/firestore';
 import { db } from '../../service/firebase/.firebase';
 
@@ -137,6 +142,32 @@ export const createHabitRequest = createAsyncThunk(
   }
 );
 
+export const updateHabitRequest = createAsyncThunk(
+  'habit/updateHabitRequest',
+  async ({ uid, hid, count }: IUpdateHabitRequest, { rejectWithValue }) => {
+    try {
+      const now = new Date();
+      const date = `${now.getFullYear()}-${
+        now.getMonth() + 1
+      }-${now.getDate()}`;
+
+      const habitRef = doc(db, 'Users', uid, 'HabitsLog', date, 'Habits', hid);
+
+      await updateDoc(habitRef, {
+        currentCount: count,
+      });
+
+      return {
+        id: hid,
+        count,
+      };
+    } catch (e) {
+      console.error(e);
+      rejectWithValue({});
+    }
+  }
+);
+
 export interface IHabit {
   id: string;
   name: string;
@@ -150,6 +181,8 @@ export interface HabitState {
   habitFetchError: string | null;
   habitCreateLoading: AsyncType;
   habitCreateError: string | null;
+  habitUpdateLoading: string | null;
+  habitUpdateError: string | null;
   habits: IHabit[];
 }
 
@@ -159,6 +192,8 @@ const initialState: HabitState = {
   habitFetchLoading: 'idle',
   habitCreateError: null,
   habitCreateLoading: 'idle',
+  habitUpdateError: null,
+  habitUpdateLoading: 'idle',
 };
 
 export const habitSlice = createSlice({
@@ -194,6 +229,24 @@ export const habitSlice = createSlice({
       .addCase(fetchHabitsRequest.pending, (state, action) => {
         state.habitFetchLoading = 'pending';
         state.habitFetchError = null;
+      });
+
+    builder
+      .addCase(updateHabitRequest.fulfilled, (state, action) => {
+        state.habitUpdateError = null;
+        state.habitUpdateLoading = 'succeeded';
+        const index = state.habits.findIndex(
+          (e) => e.id === action.payload!.id
+        );
+        state.habits[index].currentCount = action.payload!.count;
+      })
+      .addCase(updateHabitRequest.rejected, (state, action) => {
+        state.habitUpdateError = action.payload as string;
+        state.habitUpdateLoading = 'failed';
+      })
+      .addCase(updateHabitRequest.pending, (state, action) => {
+        state.habitUpdateLoading = 'pending';
+        state.habitUpdateError = null;
       });
   },
 });
