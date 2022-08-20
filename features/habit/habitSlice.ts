@@ -16,7 +16,10 @@ export const fetchHabitsRequest = createAsyncThunk(
   async ({ uid }: IFetchHabitsRequest, { rejectWithValue }) => {
     try {
       const now = new Date();
-      const date = `${now.getFullYear()}-${now.getMonth()}-${now.getDay()}`;
+      const date = `${now.getFullYear()}-${
+        now.getMonth() + 1
+      }-${now.getDate()}`;
+      console.log(date);
 
       const habitLogRef = doc(db, 'Users', uid, 'HabitsLog', date);
       const docSnapshot = await getDoc(habitLogRef);
@@ -94,15 +97,38 @@ export const createHabitRequest = createAsyncThunk(
   ) => {
     try {
       console.log('habit Create Request');
-      const goalHabitRef = collection(db, 'Users', uid, 'GoalHabit');
-      await addDoc(goalHabitRef, {
+      const goalHabitRef = collection(db, 'Users', uid, 'GoalHabits');
+      const goalRef = await addDoc(goalHabitRef, {
         name,
         goalCount,
       });
 
-      return {
+      const now = new Date();
+      const date = `${now.getFullYear()}-${
+        now.getMonth() + 1
+      }-${now.getDate()}`;
+      const habitsCollection = collection(
+        db,
+        'Users',
+        uid,
+        'HabitsLog',
+        date,
+        'Habits'
+      );
+
+      const docRef = await addDoc(habitsCollection, {
         name,
         goalCount,
+        currentCount: 0,
+        habitRef: goalRef.path,
+      });
+
+      return {
+        id: docRef.id,
+        name,
+        goalCount,
+        currentCount: 0,
+        habitRef: goalRef.path,
       };
     } catch (e) {
       console.error(e);
@@ -122,6 +148,8 @@ export interface IHabit {
 export interface HabitState {
   habitFetchLoading: AsyncType;
   habitFetchError: string | null;
+  habitCreateLoading: AsyncType;
+  habitCreateError: string | null;
   habits: IHabit[];
 }
 
@@ -129,6 +157,8 @@ const initialState: HabitState = {
   habits: [],
   habitFetchError: null,
   habitFetchLoading: 'idle',
+  habitCreateError: null,
+  habitCreateLoading: 'idle',
 };
 
 export const habitSlice = createSlice({
@@ -136,24 +166,20 @@ export const habitSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    // builder
-    //     .addCase(createHabitRequest.fulfilled, (state, action) => {
-    //         state.habitError = null;
-    //         state.habitLoading = 'succeeded';
-    //         state.habits = state.habits.concat({
-    //             name: action?.payload?.name ?? '',
-    //             goalCount: action?.payload?.goalCount ?? 0,
-    //             currentCount: 0,
-    //         });
-    //     })
-    //     .addCase(createHabitRequest.rejected, (state, action) => {
-    //         state.habitError = action.payload as string;
-    //         state.habitLoading = 'failed';
-    //     })
-    //     .addCase(createHabitRequest.pending, (state, action) => {
-    //         state.habitLoading = 'pending';
-    //         state.habitError = null;
-    //     });
+    builder
+      .addCase(createHabitRequest.fulfilled, (state, action) => {
+        state.habitCreateError = null;
+        state.habitCreateLoading = 'succeeded';
+        if (action.payload !== undefined) state.habits.push(action.payload);
+      })
+      .addCase(createHabitRequest.rejected, (state, action) => {
+        state.habitCreateError = action.payload as string;
+        state.habitCreateLoading = 'failed';
+      })
+      .addCase(createHabitRequest.pending, (state, action) => {
+        state.habitCreateLoading = 'pending';
+        state.habitCreateError = null;
+      });
 
     builder
       .addCase(fetchHabitsRequest.fulfilled, (state, action) => {
