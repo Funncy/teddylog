@@ -4,6 +4,10 @@ export interface ICreateHabitRequest {
     goalCount: number;
 }
 
+export interface IFetchHabitsRequest {
+    uid: string;
+}
+
 export interface IHabitModal {
     name: string;
     goalCount: number;

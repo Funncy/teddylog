@@ -1,13 +1,16 @@
-import React, {useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import {PlusOutlined} from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
 import Habit from './habit';
-import {Form} from 'antd';
+import { Form } from 'antd';
 import CreateHabitModal from './createHabitModal';
-import {useDispatch, useSelector} from "react-redux";
-import {createHabitRequest} from "../features/habit/habitSlice";
-import {RootState} from "../store/configureStore";
-import {IHabitModal} from "../features/habit/habitType";
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  createHabitRequest,
+  fetchHabitsRequest,
+} from '../features/habit/habitSlice';
+import { RootState } from '../store/configureStore';
+import { IHabitModal } from '../features/habit/habitType';
 
 const BackgroundDiv = styled.div`
   //background-color: red;
@@ -42,53 +45,65 @@ const Title = styled.div`
 `;
 
 function HomeBody() {
-    const [form] = Form.useForm();
-    const [count, setCount] = useState(0);
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    const dispatch = useDispatch();
-    const {uid} = useSelector(
-        (state: RootState) => state.auth
-    );
-    const createHabit = ({name, goalCount}: IHabitModal) => {
-        // @ts-ignore
-        dispatch(createHabitRequest({uid, name, goalCount}));
-        setIsModalVisible(false);
-    };
+  const [form] = Form.useForm();
+  const [count, setCount] = useState(0);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const dispatch = useDispatch();
+  const { uid } = useSelector((state: RootState) => state.auth);
+  const { habits } = useSelector((state: RootState) => state.habit);
+  const createHabit = ({ name, goalCount }: IHabitModal) => {
+    // @ts-ignore
+    dispatch(createHabitRequest({ uid, name, goalCount }));
+    setIsModalVisible(false);
+  };
 
-    return (
-        <BackgroundDiv>
-            <Title>
-                <span style={{alignSelf: 'center'}}>TeddyLog</span>
-            </Title>
-            <div>
-                <Habit
-                    title={'테스트'}
-                    total={10}
-                    current={count}
-                    decrease={(e) => {
-                        setCount(count - 1);
-                    }}
-                    increase={(e) => {
-                        setCount(count + 1);
-                    }}
-                ></Habit>
-            </div>
-            <FabButton
-                onClick={(e) => {
-                    if (!isModalVisible) setIsModalVisible(true);
-                }}
-            >
-                <PlusOutlined
-                    style={{fontSize: '20px', fontWeight: 'bold', color: 'white'}}
-                />
-            </FabButton>
-            <CreateHabitModal
-                isModalVisible={isModalVisible}
-                onOk={createHabit}
-                onCancel={(e) => setIsModalVisible(false)}
-            />
-        </BackgroundDiv>
-    );
+  useEffect(() => {
+    console.log('습관 가져오기 요청');
+    console.log(uid);
+    console.log(habits);
+    // @ts-ignore
+    dispatch(fetchHabitsRequest({ uid }));
+  }, []);
+
+  return (
+    <BackgroundDiv>
+      <Title>
+        <span style={{ alignSelf: 'center' }}>TeddyLog</span>
+      </Title>
+      <div>
+        {habits.map((e) => {
+          return (
+            <Habit
+              key={e.id}
+              title={e.name}
+              total={e.goalCount}
+              current={e.currentCount ?? 0}
+              decrease={(e) => {
+                // setCount(count - 1);
+              }}
+              increase={(e) => {
+                // setCount(count + 1);
+              }}
+            ></Habit>
+          );
+        })}
+      </div>
+      <FabButton
+        onClick={(e) => {
+          if (!isModalVisible) setIsModalVisible(true);
+        }}
+      >
+        <PlusOutlined
+          style={{ fontSize: '20px', fontWeight: 'bold', color: 'white' }}
+        />
+      </FabButton>
+      <CreateHabitModal
+        isModalVisible={isModalVisible}
+        onOk={createHabit}
+        onCancel={(e) => setIsModalVisible(false)}
+      />
+    </BackgroundDiv>
+  );
 }
 
 export default HomeBody;
