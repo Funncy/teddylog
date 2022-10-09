@@ -15,18 +15,15 @@ import {
   updateDoc,
 } from '@firebase/firestore';
 import { db } from '../../service/firebase/.firebase';
+import getTodayDocId from '../../utils/getDocId';
 
 export const fetchHabitsRequest = createAsyncThunk(
   'habit/fetchHabitsRequest',
   async ({ uid }: IFetchHabitsRequest, { rejectWithValue }) => {
     try {
-      const now = new Date();
-      const date = `${now.getFullYear()}-${
-        now.getMonth() + 1
-      }-${now.getDate()}`;
-      console.log(date);
+      const todayDocId = getTodayDocId();
 
-      const habitLogRef = doc(db, 'Users', uid, 'HabitsLog', date);
+      const habitLogRef = doc(db, 'Users', uid, 'HabitsLog', todayDocId);
       const docSnapshot = await getDoc(habitLogRef);
       if (docSnapshot.exists()) {
         console.log('doc 존재!');
@@ -35,7 +32,7 @@ export const fetchHabitsRequest = createAsyncThunk(
           'Users',
           uid,
           'HabitsLog',
-          date,
+          todayDocId,
           'Habits'
         );
         const habits = await getDocs(habitsCollection);
@@ -52,7 +49,7 @@ export const fetchHabitsRequest = createAsyncThunk(
       } else {
         console.log('no Docs');
         await setDoc(habitLogRef, {
-          date,
+          todayDocId,
           success: false,
         });
 
@@ -61,7 +58,7 @@ export const fetchHabitsRequest = createAsyncThunk(
           'Users',
           uid,
           'HabitsLog',
-          date,
+          todayDocId,
           'Habits'
         );
 
@@ -108,16 +105,13 @@ export const createHabitRequest = createAsyncThunk(
         goalCount,
       });
 
-      const now = new Date();
-      const date = `${now.getFullYear()}-${
-        now.getMonth() + 1
-      }-${now.getDate()}`;
+      const todayDocId = getTodayDocId();
       const habitsCollection = collection(
         db,
         'Users',
         uid,
         'HabitsLog',
-        date,
+        todayDocId,
         'Habits'
       );
 
@@ -146,12 +140,16 @@ export const updateHabitRequest = createAsyncThunk(
   'habit/updateHabitRequest',
   async ({ uid, hid, count }: IUpdateHabitRequest, { rejectWithValue }) => {
     try {
-      const now = new Date();
-      const date = `${now.getFullYear()}-${
-        now.getMonth() + 1
-      }-${now.getDate()}`;
-
-      const habitRef = doc(db, 'Users', uid, 'HabitsLog', date, 'Habits', hid);
+      const todayDocId = getTodayDocId();
+      const habitRef = doc(
+        db,
+        'Users',
+        uid,
+        'HabitsLog',
+        todayDocId,
+        'Habits',
+        hid
+      );
 
       await updateDoc(habitRef, {
         currentCount: count,
