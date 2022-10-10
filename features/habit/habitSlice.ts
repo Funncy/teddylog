@@ -15,7 +15,7 @@ import {
   updateDoc,
 } from '@firebase/firestore';
 import { db } from '../../service/firebase/.firebase';
-import getTodayDocId from '../../utils/getDocId';
+import getTodayDocId, { getDocId } from '../../utils/getDocId';
 
 export const fetchHabitsRequest = createAsyncThunk(
   'habit/fetchHabitsRequest',
