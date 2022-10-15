@@ -11,3 +11,11 @@ export interface IGoalHabit {
   goalCount: number;
   habitRef: string;
 }
+
+export interface ICreateHabitRequest {
+  uid: string;
+  name: string;
+  goalCount: number;
+}
+
+export interface 

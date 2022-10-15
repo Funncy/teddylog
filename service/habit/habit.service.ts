@@ -9,12 +9,17 @@ import {
   DocumentReference,
   updateDoc,
 } from '@firebase/firestore';
-import { IGoalHabit, IHabit } from '../../interface/habit/habit.interface';
+import {
+  ICreateHabitRequest,
+  IGoalHabit,
+  IHabit,
+} from '../../interface/habit/habit.interface';
 import getTodayDocId from '../../utils/getDocId';
 
 const UserCollectionName = 'Users';
 const HabitsLogCollectionName = 'HabitsLog';
 const HabitsCollectionName = 'Habits';
+const GoalHabitsCollectionName = 'GoalHabits';
 
 export class HabitService {
   private db: Firestore;
@@ -46,6 +51,23 @@ export class HabitService {
         };
       });
     }
+  }
+
+  async createNewHabit({
+    uid,
+    name,
+    goalCount,
+  }: ICreateHabitRequest): Promise<IHabit> {
+    const goalRef = await this.createGoalHabit(uid, name, goalCount);
+    const habitRef = await this.createHabitLog(uid, name, goalCount, goalRef);
+
+    return {
+      id: habitRef.id,
+      name,
+      goalCount,
+      currentCount: 0,
+      habitRef: goalRef.path,
+    };
   }
 
   private async fetchHabits(uid: string, docId: string): Promise<IHabit[]> {
@@ -106,5 +128,46 @@ export class HabitService {
         })
       )
     );
+  }
+
+  private async createGoalHabit(
+    uid: string,
+    name: string,
+    goalCount: number
+  ): Promise<DocumentReference> {
+    const goalHabitRef = collection(
+      this.db,
+      UserCollectionName,
+      uid,
+      GoalHabitsCollectionName
+    );
+    return addDoc(goalHabitRef, {
+      name,
+      goalCount,
+    });
+  }
+
+  private async createHabitLog(
+    uid: string,
+    name: string,
+    goalCount: number,
+    goalRef: DocumentReference
+  ) {
+    const todayDocId = getTodayDocId();
+    const habitsCollection = collection(
+      this.db,
+      UserCollectionName,
+      uid,
+      HabitsLogCollectionName,
+      todayDocId,
+      HabitsCollectionName
+    );
+
+    return await addDoc(habitsCollection, {
+      name,
+      goalCount,
+      currentCount: 0,
+      habitRef: goalRef.path,
+    });
   }
 }

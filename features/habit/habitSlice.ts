@@ -40,40 +40,10 @@ export const createHabitRequest = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      console.log('habit Create Request');
-      const goalHabitRef = collection(db, 'Users', uid, 'GoalHabits');
-      const goalRef = await addDoc(goalHabitRef, {
-        name,
-        goalCount,
-      });
-
-      const todayDocId = getTodayDocId();
-      const habitsCollection = collection(
-        db,
-        'Users',
-        uid,
-        'HabitsLog',
-        todayDocId,
-        'Habits'
-      );
-
-      const docRef = await addDoc(habitsCollection, {
-        name,
-        goalCount,
-        currentCount: 0,
-        habitRef: goalRef.path,
-      });
-
-      return {
-        id: docRef.id,
-        name,
-        goalCount,
-        currentCount: 0,
-        habitRef: goalRef.path,
-      };
+      return await habitService.createNewHabit({ uid, name, goalCount });
     } catch (e) {
       console.error(e);
-      rejectWithValue({});
+      rejectWithValue('습관 생성 실패');
     }
   }
 );
