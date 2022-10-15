@@ -1,20 +1,7 @@
 import { UpOutlined } from '@ant-design/icons';
 import { Firestore, doc, getDoc, setDoc, updateDoc } from '@firebase/firestore';
 import { StringLike } from '@firebase/util';
-
-export interface IUser {
-  uid: string | null;
-  email: string;
-  nickname: string;
-  introduce: string;
-}
-
-export interface IUpdateUser {
-  uid: string;
-  email: string;
-  nickname: string;
-  introduce: string;
-}
+import { IUpdateRequestUser, IUser } from '../../interface/user/user.interface';
 
 export class UserService {
   private db: Firestore;
@@ -46,7 +33,7 @@ export class UserService {
     email,
     nickname,
     introduce,
-  }: IUpdateUser): Promise<IUser> {
+  }: IUpdateRequestUser): Promise<IUser> {
     const userCollection = doc(this.db, 'Users', uid);
     const userSnap = await getDoc(userCollection);
     if (userSnap.exists()) {
