@@ -2,10 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { AsyncType } from '../../common/asyncType';
 import { fetchUserInfoRequest } from '../user/user.slice';
 import { AuthService } from '../../service/auth/auth.service';
-import {
-  ISignUpRequest,
-  ILoginRequest,
-} from '../../interface/auth/auth.interface';
+import { ISignUpRequest, ILoginRequest } from './auth.interface';
 
 const authService = new AuthService();
 

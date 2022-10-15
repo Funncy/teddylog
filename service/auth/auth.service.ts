@@ -7,7 +7,7 @@ import {
   ISignUpRequest,
   ILoginSuccess,
   ILoginRequest,
-} from '../../interface/auth/auth.interface';
+} from '../../features/auth/auth.interface';
 
 export class AuthService {
   async signUp({ email, password }: ISignUpRequest): Promise<ILoginSuccess> {

@@ -3,10 +3,7 @@ import { AsyncType } from '../../common/asyncType';
 import { doc, getDoc, setDoc, updateDoc } from '@firebase/firestore';
 import { db } from '../../service/firebase/.firebase';
 import { UserService } from '../../service/user/user.service';
-import {
-  IUpdateRequestUser,
-  IUserRequest,
-} from '../../interface/user/user.interface';
+import { IUpdateRequestUser, IUserRequest } from './user.interface';
 
 const userService = new UserService(db);
 

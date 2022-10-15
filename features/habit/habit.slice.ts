@@ -8,7 +8,7 @@ import {
   IHabit,
   IHabitFetchRequest,
   IUpdateHabitRequest,
-} from '../../interface/habit/habit.interface';
+} from './habit.interface';
 
 const habitService = new HabitService(db);
 

@@ -11,7 +11,7 @@ import {
   updateHabitRequest,
 } from '../features/habit/habit.slice';
 import { RootState } from '../store/configureStore';
-import { IHabitModel } from '../interface/habit/habit.interface';
+import { IHabitModel } from '../features/habit/habit.interface';
 
 const BackgroundDiv = styled.div`
   //background-color: red;

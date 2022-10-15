@@ -1,7 +1,7 @@
 import { UpOutlined } from '@ant-design/icons';
 import { Firestore, doc, getDoc, setDoc, updateDoc } from '@firebase/firestore';
 import { StringLike } from '@firebase/util';
-import { IUpdateRequestUser, IUser } from '../../interface/user/user.interface';
+import { IUpdateRequestUser, IUser } from '../../features/user/user.interface';
 
 export class UserService {
   private db: Firestore;

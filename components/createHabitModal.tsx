@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, Input, Modal } from 'antd';
-import { IHabitModel } from '../interface/habit/habit.interface';
+import { IHabitModel } from '../features/habit/habit.interface';
 
 interface ICreateHabitModal {
   isModalVisible: boolean;

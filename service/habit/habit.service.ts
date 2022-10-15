@@ -15,7 +15,7 @@ import {
   IHabit,
   IUpdateHabitRequest,
   IUpdateSuccess,
-} from '../../interface/habit/habit.interface';
+} from '../../features/habit/habit.interface';
 import getTodayDocId from '../../utils/getDocId';
 
 const UserCollectionName = 'Users';
