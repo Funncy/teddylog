@@ -16,77 +16,19 @@ import {
 } from '@firebase/firestore';
 import { db } from '../../service/firebase/.firebase';
 import getTodayDocId, { getDocId } from '../../utils/getDocId';
+import { HabitService } from '../../service/habit/habit.service';
+import { IHabit } from '../../interface/habit/habit.interface';
+
+const habitService = new HabitService(db);
 
 export const fetchHabitsRequest = createAsyncThunk(
   'habit/fetchHabitsRequest',
   async ({ uid }: IFetchHabitsRequest, { rejectWithValue }) => {
     try {
-      const todayDocId = getTodayDocId();
-
-      const habitLogRef = doc(db, 'Users', uid, 'HabitsLog', todayDocId);
-      const docSnapshot = await getDoc(habitLogRef);
-      if (docSnapshot.exists()) {
-        console.log('doc 존재!');
-        const habitsCollection = collection(
-          db,
-          'Users',
-          uid,
-          'HabitsLog',
-          todayDocId,
-          'Habits'
-        );
-        const habits = await getDocs(habitsCollection);
-
-        console.log(`해당 Doc 갯수 ${habits.docs.length}`);
-
-        return habits.docs.map<IHabit>((e) => ({
-          id: e.id,
-          habitRef: e.data().habitRef,
-          name: e.data().name,
-          goalCount: e.data().goalCount,
-          currentCount: e.data().currentCount,
-        }));
-      } else {
-        console.log('no Docs');
-        await setDoc(habitLogRef, {
-          todayDocId,
-          success: false,
-        });
-
-        const todayHabitLogCollection = collection(
-          db,
-          'Users',
-          uid,
-          'HabitsLog',
-          todayDocId,
-          'Habits'
-        );
-
-        const goalHabitCollection = collection(db, 'Users', uid, 'GoalHabits');
-        const goalHabits = await getDocs(goalHabitCollection);
-
-        const result: IHabit[] = [];
-        for (const goalhabit of goalHabits.docs) {
-          const { name, goalCount } = goalhabit.data();
-          console.log(`Create Habit ${name} ${goalCount}`);
-          const ref = await addDoc(todayHabitLogCollection, {
-            name,
-            goalCount,
-            currentCount: 0,
-            habitRef: goalhabit.ref.path,
-          });
-          result.push({
-            id: ref.id,
-            name,
-            goalCount,
-            currentCount: 0,
-            habitRef: goalhabit.ref.path,
-          });
-        }
-        return result;
-      }
+      return await habitService.fetchInitHabits(uid);
     } catch (e) {
       console.error(e);
+      rejectWithValue('습관 불러오기 실패');
     }
   }
 );
@@ -166,14 +108,6 @@ export const updateHabitRequest = createAsyncThunk(
   }
 );
 
-export interface IHabit {
-  id: string;
-  name: string;
-  goalCount: number;
-  currentCount: number | undefined;
-  habitRef: string;
-}
-
 export interface HabitState {
   habitFetchLoading: AsyncType;
   habitFetchError: string | null;
@@ -218,7 +152,8 @@ export const habitSlice = createSlice({
       .addCase(fetchHabitsRequest.fulfilled, (state, action) => {
         state.habitFetchError = null;
         state.habitFetchLoading = 'succeeded';
-        state.habits = action.payload ?? [];
+        console.dir(action.payload as IHabit[]);
+        state.habits = action.payload as IHabit[];
       })
       .addCase(fetchHabitsRequest.rejected, (state, action) => {
         state.habitFetchError = action.payload as string;
