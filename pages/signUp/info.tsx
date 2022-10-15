@@ -8,7 +8,7 @@ import { Form, message } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/configureStore';
 import { useRouter } from 'next/router';
-import { updateUserInfo } from '../../features/user/userSlice';
+import { updateUserInfo } from '../../features/user/user.slice';
 import SignUpInfoForm from '../../components/SignUpInfoForm';
 
 function UserInfo() {
@@ -32,8 +32,8 @@ function UserInfo() {
       updateUserInfo({
         nickname: data.nickname,
         introduce: data.introduce,
-        email,
-        uid: uid,
+        email: email ?? '',
+        uid: uid ?? '',
       })
     ).unwrap();
 
