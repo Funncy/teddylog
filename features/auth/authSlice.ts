@@ -1,12 +1,16 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { AsyncType } from '../../common/asyncType';
-import { ILoginRequest, ISignUpRequest } from './authType';
+import { ILoginRequest } from './authType';
 import {
   createUserWithEmailAndPassword,
   getAuth,
   signInWithEmailAndPassword,
 } from '@firebase/auth';
 import { fetchUserInfoRequest } from '../user/user.slice';
+import { AuthService } from '../../service/auth/auth.service';
+import { ISignUpRequest } from '../../interface/auth/auth.interface';
+
+const authService = new AuthService();
 
 export const fetchLoginRequest = createAsyncThunk(
   'auth/fetchLoginRequest',
@@ -39,16 +43,7 @@ export const fetchSignUpRequest = createAsyncThunk(
   'auth/fetchSignUpRequest',
   async (request: ISignUpRequest, { rejectWithValue }) => {
     try {
-      const credential = await createUserWithEmailAndPassword(
-        getAuth(),
-        request.email,
-        request.password
-      );
-      return {
-        token: await credential.user.getIdToken(),
-        email: credential.user.email,
-        uid: credential.user.uid,
-      };
+      return await authService.signUp(request);
     } catch (err) {
       throw rejectWithValue('회원가입 실패');
     }
