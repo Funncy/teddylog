@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { AsyncType } from '../../common/asyncType';
 import { doc, getDoc, setDoc, updateDoc } from '@firebase/firestore';
 import { db } from '../../service/firebase/.firebase';
-import { UserService } from '../../service/user/user';
+import { UserService } from '../../service/user/user.service';
 import {
   IUpdateRequestUser,
   IUserRequest,

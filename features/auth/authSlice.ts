@@ -6,7 +6,7 @@ import {
   getAuth,
   signInWithEmailAndPassword,
 } from '@firebase/auth';
-import { fetchUserInfoRequest } from '../user/userSlice';
+import { fetchUserInfoRequest } from '../user/user.slice';
 
 export const fetchLoginRequest = createAsyncThunk(
   'auth/fetchLoginRequest',
