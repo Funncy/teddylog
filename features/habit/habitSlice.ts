@@ -5,17 +5,7 @@ import {
   IFetchHabitsRequest,
   IUpdateHabitRequest,
 } from './habitType';
-import {
-  addDoc,
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  setDoc,
-  updateDoc,
-} from '@firebase/firestore';
 import { db } from '../../service/firebase/.firebase';
-import getTodayDocId, { getDocId } from '../../utils/getDocId';
 import { HabitService } from '../../service/habit/habit.service';
 import { IHabit } from '../../interface/habit/habit.interface';
 
@@ -52,28 +42,10 @@ export const updateHabitRequest = createAsyncThunk(
   'habit/updateHabitRequest',
   async ({ uid, hid, count }: IUpdateHabitRequest, { rejectWithValue }) => {
     try {
-      const todayDocId = getTodayDocId();
-      const habitRef = doc(
-        db,
-        'Users',
-        uid,
-        'HabitsLog',
-        todayDocId,
-        'Habits',
-        hid
-      );
-
-      await updateDoc(habitRef, {
-        currentCount: count,
-      });
-
-      return {
-        id: hid,
-        count,
-      };
+      return await habitService.updateHabit({ uid, hid, count });
     } catch (e) {
       console.error(e);
-      rejectWithValue({});
+      rejectWithValue('습관 업데이트 실패');
     }
   }
 );
@@ -139,7 +111,7 @@ export const habitSlice = createSlice({
         state.habitUpdateError = null;
         state.habitUpdateLoading = 'succeeded';
         const index = state.habits.findIndex(
-          (e) => e.id === action.payload!.id
+          (e) => e.id === action.payload!.hid
         );
         state.habits[index].currentCount = action.payload!.count;
       })

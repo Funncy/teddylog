@@ -13,6 +13,8 @@ import {
   ICreateHabitRequest,
   IGoalHabit,
   IHabit,
+  IUpdateHabitRequest,
+  IUpdateSuccess,
 } from '../../interface/habit/habit.interface';
 import getTodayDocId from '../../utils/getDocId';
 
@@ -70,6 +72,35 @@ export class HabitService {
     };
   }
 
+  async updateHabit({
+    uid,
+    hid,
+    count,
+  }: IUpdateHabitRequest): Promise<IUpdateSuccess> {
+    const docId = getTodayDocId();
+    const habitRef = this.findHabitRefById(uid, docId, hid);
+    await updateDoc(habitRef, {
+      currentCount: count,
+    });
+
+    return {
+      hid: hid,
+      count,
+    };
+  }
+
+  private findHabitRefById(uid: string, docId: string, habitId: string) {
+    return doc(
+      this.db,
+      UserCollectionName,
+      uid,
+      HabitsLogCollectionName,
+      docId,
+      HabitsCollectionName,
+      habitId
+    );
+  }
+
   private async fetchHabits(uid: string, docId: string): Promise<IHabit[]> {
     const habitsCollection = collection(
       this.db,
@@ -95,7 +126,7 @@ export class HabitService {
       this.db,
       UserCollectionName,
       uid,
-      'GoalHabits'
+      GoalHabitsCollectionName
     );
     const goalHabits = await getDocs(goalHabitCollection);
 

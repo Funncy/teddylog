@@ -18,4 +18,13 @@ export interface ICreateHabitRequest {
   goalCount: number;
 }
 
-export interface 
+export interface IUpdateHabitRequest {
+  uid: string;
+  hid: string;
+  count: number;
+}
+
+export interface IUpdateSuccess {
+  hid: string;
+  count: number;
+}
