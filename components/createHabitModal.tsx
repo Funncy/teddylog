@@ -1,10 +1,10 @@
 import React from 'react';
 import { Form, Input, Modal } from 'antd';
-import { IHabitModal } from '../features/habit/habitType';
+import { IHabitModel } from '../interface/habit/habit.interface';
 
 interface ICreateHabitModal {
   isModalVisible: boolean;
-  onOk: (data: IHabitModal) => void;
+  onOk: (data: IHabitModel) => void;
   onCancel: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 }
 

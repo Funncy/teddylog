@@ -9,9 +9,9 @@ import {
   createHabitRequest,
   fetchHabitsRequest,
   updateHabitRequest,
-} from '../features/habit/habitSlice';
+} from '../features/habit/habit.slice';
 import { RootState } from '../store/configureStore';
-import { IHabitModal } from '../features/habit/habitType';
+import { IHabitModel } from '../interface/habit/habit.interface';
 
 const BackgroundDiv = styled.div`
   //background-color: red;
@@ -52,7 +52,7 @@ function HomeBody() {
   const dispatch = useDispatch();
   const { uid } = useSelector((state: RootState) => state.auth);
   const { habits } = useSelector((state: RootState) => state.habit);
-  const createHabit = ({ name, goalCount }: IHabitModal) => {
+  const createHabit = ({ name, goalCount }: IHabitModel) => {
     // @ts-ignore
     dispatch(createHabitRequest({ uid, name, goalCount }));
     setIsModalVisible(false);
