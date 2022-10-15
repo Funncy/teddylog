@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { MinusOutlined, PlusOutlined } from '@ant-design/icons';
 
-const Habbit = styled.div`
+const HabitWrapper = styled.div`
   box-shadow: 0 0 5px #ebeff6;
   height: 60px;
   width: 100%;
@@ -43,7 +43,7 @@ interface IHbait {
 
 function Habit({ title, total, current, decrease, increase }: IHbait) {
   return (
-    <Habbit>
+    <HabitWrapper>
       <IconWrapper onClick={decrease}>
         <MinusOutlined />
       </IconWrapper>
@@ -57,7 +57,7 @@ function Habit({ title, total, current, decrease, increase }: IHbait) {
         <PlusOutlined />
       </IconWrapper>
       <ProgressBackground progress={(current / total) * 100} />
-    </Habbit>
+    </HabitWrapper>
   );
 }
 

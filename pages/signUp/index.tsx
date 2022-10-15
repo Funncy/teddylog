@@ -3,13 +3,13 @@ import {
   ContentWrapper,
   LayoutWrappper,
   Title,
-} from '../../components/layoutStyle';
+} from '../../components/layout-style';
 import { Form, message } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/configureStore';
 import { useRouter } from 'next/router';
 import { fetchSignUpRequest } from '../../features/auth/auth.slice';
-import SignUpForm from '../../components/signUpForm';
+import SignUpForm from '../../components/signup-form';
 
 function SignUp() {
   const { uid, signUpLoading, signUpError } = useSelector(

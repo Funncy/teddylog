@@ -3,13 +3,13 @@ import {
   ContentWrapper,
   LayoutWrappper,
   Title,
-} from '../../components/layoutStyle';
+} from '../../components/layout-style';
 import { Form, message } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/configureStore';
 import { useRouter } from 'next/router';
 import { updateUserInfo } from '../../features/user/user.slice';
-import SignUpInfoForm from '../../components/SignUpInfoForm';
+import SignUpInfoForm from '../../components/signup-info-form';
 
 function UserInfo() {
   const { updateError, updateLoading } = useSelector(

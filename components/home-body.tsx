@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { PlusOutlined } from '@ant-design/icons';
 import Habit from './habit';
 import { Form } from 'antd';
-import CreateHabitModal from './createHabitModal';
+import CreateHabitModal from './create-habit-modal';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   createHabitRequest,
