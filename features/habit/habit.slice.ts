@@ -1,19 +1,20 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { AsyncType } from '../../common/asyncType';
-import {
-  ICreateHabitRequest,
-  IFetchHabitsRequest,
-  IUpdateHabitRequest,
-} from './habitType';
+
 import { db } from '../../service/firebase/.firebase';
 import { HabitService } from '../../service/habit/habit.service';
-import { IHabit } from '../../interface/habit/habit.interface';
+import {
+  ICreateHabitRequest,
+  IHabit,
+  IHabitFetchRequest,
+  IUpdateHabitRequest,
+} from '../../interface/habit/habit.interface';
 
 const habitService = new HabitService(db);
 
 export const fetchHabitsRequest = createAsyncThunk(
   'habit/fetchHabitsRequest',
-  async ({ uid }: IFetchHabitsRequest, { rejectWithValue }) => {
+  async ({ uid }: IHabitFetchRequest, { rejectWithValue }) => {
     try {
       return await habitService.fetchInitHabits(uid);
     } catch (e) {

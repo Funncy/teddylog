@@ -6,7 +6,7 @@ import {
 } from '../../components/layoutStyle';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/configureStore';
-import { fetchLoginRequest } from '../../features/auth/authSlice';
+import { fetchLoginRequest } from '../../features/auth/auth.slice';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import LoginForm from '../../components/loginForm';

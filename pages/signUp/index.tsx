@@ -8,7 +8,7 @@ import { Form, message } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/configureStore';
 import { useRouter } from 'next/router';
-import { fetchSignUpRequest } from '../../features/auth/authSlice';
+import { fetchSignUpRequest } from '../../features/auth/auth.slice';
 import SignUpForm from '../../components/signUpForm';
 
 function SignUp() {

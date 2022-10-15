@@ -28,3 +28,12 @@ export interface IUpdateSuccess {
   hid: string;
   count: number;
 }
+
+export interface IHabitFetchRequest {
+  uid: string;
+}
+
+export interface IHabitModel {
+  name: string;
+  goalCount: number;
+}
