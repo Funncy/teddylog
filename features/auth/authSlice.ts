@@ -1,14 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { AsyncType } from '../../common/asyncType';
-import { ILoginRequest } from './authType';
-import {
-  createUserWithEmailAndPassword,
-  getAuth,
-  signInWithEmailAndPassword,
-} from '@firebase/auth';
 import { fetchUserInfoRequest } from '../user/user.slice';
 import { AuthService } from '../../service/auth/auth.service';
-import { ISignUpRequest } from '../../interface/auth/auth.interface';
+import {
+  ISignUpRequest,
+  ILoginRequest,
+} from '../../interface/auth/auth.interface';
 
 const authService = new AuthService();
 
@@ -16,23 +13,15 @@ export const fetchLoginRequest = createAsyncThunk(
   'auth/fetchLoginRequest',
   async (user: ILoginRequest, { rejectWithValue, dispatch }) => {
     try {
-      const credential = await signInWithEmailAndPassword(
-        getAuth(),
-        user.email,
-        user.password
-      );
+      const auth = await authService.login(user);
 
       dispatch(
         fetchUserInfoRequest({
-          email: credential.user.email,
-          uid: credential.user.uid,
+          email: auth.email,
+          uid: auth.uid,
         })
       );
-      return {
-        token: await credential.user.getIdToken(),
-        email: credential.user.email,
-        uid: credential.user.uid,
-      };
+      return auth;
     } catch (err) {
       throw rejectWithValue('로그인 실패');
     }
